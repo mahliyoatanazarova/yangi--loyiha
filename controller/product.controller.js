@@ -4,7 +4,7 @@ const { v4 } = require("uuid")
 const getAllProducts = async (req, res) => {
     try {
     const products = read_file("data/product.json")
-    res.render("index", { products })
+    res.status(200).json( products )
     } catch (error) {
        res.status(500).json({
             message: "Internal server error"
@@ -27,7 +27,9 @@ const addProduct = async (req, res) => {
         })
     
         write_file("data/product.json", products)
-        res.status(302).redirect("http://localhost:4001/get_all_products")
+        res.status(201).json({
+            message:"Added new product"
+        })
         } catch (error) {
        res.status(500).json({
             message: "Internal server error"
@@ -49,7 +51,7 @@ const getOneProduct = async (req, res) => {
         })
     }
 
-    res.status(200).render("single", { foundedProduct })
+    res.status(200).json( foundedProduct )
      } catch (error) {
        res.status(500).json({
             message: "Internal server error"
@@ -80,7 +82,9 @@ const updateProduct = async (req, res) => {
     });
 
      write_file("data/product.json", products)
-        res.status(302).redirect("http://localhost:4001/get_all_products")
+        res.status(200).json({
+             message:"Updated product"
+        })
     } catch (error) {
        res.status(500).json({
             message: "Internal server error"
@@ -108,7 +112,9 @@ const deleteProduct = async (req, res) => {
     });
 
      write_file("data/product.json", products)
-         res.status(302).redirect("http://localhost:4001/get_all_products")
+         res.status(200).json({
+            message:"Deleted product"
+         })
     } catch (error) {
        res.status(500).json({
             message: "Internal server error"
